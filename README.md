@@ -1,1 +1,1 @@
-# This repository contain my progress learning C Language and still going..
+# This repository contains my progress in learning C Language and still going..
