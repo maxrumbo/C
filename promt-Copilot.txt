@@ -1,0 +1,5 @@
+1. Bagaimana penggunaan materi pointer to function dalam bahasa c
+
+2. pointer to function apakah digunakan kepada function dengan tipe void/tidak kembalian?
+
+3. Apakah ekspresi NULL bisa digunakan tanpa library dalam bahasa C?
