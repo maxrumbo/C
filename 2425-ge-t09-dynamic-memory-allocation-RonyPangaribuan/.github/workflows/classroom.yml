@@ -1,0 +1,157 @@
+name: Autograding Tests
+'on':
+- workflow_dispatch
+- repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: t09&#45;01&#45;01
+      id: t09-45-01-45-01
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: t09&#45;01&#45;01
+        setup-command: make compile
+        command: make -s test_01
+        input: |
+          create-student#12S22999#Wiro Sableng#2022#Information Systems
+          print-students
+          create-student#12S22998#Jaka Sembung#2022#Information Systems
+          print-students
+          ---
+        expected-output: |
+          12S22999|Wiro Sableng|2022|Information Systems|0.00
+          12S22999|Wiro Sableng|2022|Information Systems|0.00
+          12S22998|Jaka Sembung|2022|Information Systems|0.00
+        comparison-method: exact
+        timeout: 1
+        max-score: 25
+    - name: t09&#45;02&#45;01
+      id: t09-45-02-45-01
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: t09&#45;02&#45;01
+        setup-command: make compile
+        command: make -s test_02
+        input: |
+          create-student#12S22999#Wiro Sableng#2022#Information Systems
+          print-students
+          create-student#12S22998#Jaka Sembung#2022#Information Systems
+          print-students
+          create-course#12S1102#Visual Programming#2#D
+          print-courses
+          create-course#10S1002#Procedural Programming#2#C
+          print-courses
+          print-students
+          print-courses
+          ---
+        expected-output: |
+          12S22999|Wiro Sableng|2022|Information Systems|0.00
+          12S22999|Wiro Sableng|2022|Information Systems|0.00
+          12S22998|Jaka Sembung|2022|Information Systems|0.00
+          12S1102|Visual Programming|2|D
+          12S1102|Visual Programming|2|D
+          10S1002|Procedural Programming|2|C
+          12S22999|Wiro Sableng|2022|Information Systems|0.00
+          12S22998|Jaka Sembung|2022|Information Systems|0.00
+          12S1102|Visual Programming|2|D
+          10S1002|Procedural Programming|2|C
+        comparison-method: exact
+        timeout: 1
+        max-score: 25
+    - name: t09&#45;03&#45;1
+      id: t09-45-03-45-1
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: t09&#45;03&#45;1
+        setup-command: make compile
+        command: make -s test_03
+        input: |
+          create-student#12S22999#Wiro Sableng#2022#Information Systems
+          print-students
+          create-student#12S22998#Jaka Sembung#2022#Information Systems
+          print-students
+          create-course#12S1102#Visual Programming#2#D
+          print-courses
+          create-course#10S1002#Procedural Programming#2#C
+          print-courses
+          print-students
+          find-student-by-id#12S22998
+          print-courses
+          find-student-by-id#12S22999
+          ---
+        expected-output: |
+          12S22999|Wiro Sableng|2022|Information Systems|0.00
+          12S22999|Wiro Sableng|2022|Information Systems|0.00
+          12S22998|Jaka Sembung|2022|Information Systems|0.00
+          12S1102|Visual Programming|2|D
+          12S1102|Visual Programming|2|D
+          10S1002|Procedural Programming|2|C
+          12S22999|Wiro Sableng|2022|Information Systems|0.00
+          12S22998|Jaka Sembung|2022|Information Systems|0.00
+          12S22998|Jaka Sembung|2022|Information Systems|0.00
+          12S1102|Visual Programming|2|D
+          10S1002|Procedural Programming|2|C
+          12S22999|Wiro Sableng|2022|Information Systems|0.00
+        comparison-method: exact
+        timeout: 1
+        max-score: 25
+    - name: t09&#45;04&#45;01
+      id: t09-45-04-45-01
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: t09&#45;04&#45;01
+        setup-command: make compile
+        command: make -s test_04
+        input: |
+          create-student#12S22999#Wiro Sableng#2022#Information Systems
+          print-students
+          create-student#12S22998#Jaka Sembung#2022#Information Systems
+          print-students
+          create-course#12S1102#Visual Programming#2#D
+          print-courses
+          create-course#10S1002#Procedural Programming#2#C
+          print-courses
+          print-students
+          find-student-by-id#12S22998
+          print-courses
+          find-student-by-id#12S22990
+          find-course-by-code#10S1002
+          find-course-by-code#10S1000
+          find-student-by-id#12S22999
+          find-course-by-code#12S1102
+          ---
+        expected-output: |
+          12S22999|Wiro Sableng|2022|Information Systems|0.00
+          12S22999|Wiro Sableng|2022|Information Systems|0.00
+          12S22998|Jaka Sembung|2022|Information Systems|0.00
+          12S1102|Visual Programming|2|D
+          12S1102|Visual Programming|2|D
+          10S1002|Procedural Programming|2|C
+          12S22999|Wiro Sableng|2022|Information Systems|0.00
+          12S22998|Jaka Sembung|2022|Information Systems|0.00
+          12S22998|Jaka Sembung|2022|Information Systems|0.00
+          12S1102|Visual Programming|2|D
+          10S1002|Procedural Programming|2|C
+          10S1002|Procedural Programming|2|C
+          12S22999|Wiro Sableng|2022|Information Systems|0.00
+          12S1102|Visual Programming|2|D
+        comparison-method: exact
+        timeout: 1
+        max-score: 25
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        T09-45-01-45-01_RESULTS: "${{steps.t09-45-01-45-01.outputs.result}}"
+        T09-45-02-45-01_RESULTS: "${{steps.t09-45-02-45-01.outputs.result}}"
+        T09-45-03-45-1_RESULTS: "${{steps.t09-45-03-45-1.outputs.result}}"
+        T09-45-04-45-01_RESULTS: "${{steps.t09-45-04-45-01.outputs.result}}"
+      with:
+        runners: t09-45-01-45-01,t09-45-02-45-01,t09-45-03-45-1,t09-45-04-45-01

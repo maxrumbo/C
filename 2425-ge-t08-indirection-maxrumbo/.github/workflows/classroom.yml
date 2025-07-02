@@ -1,0 +1,131 @@
+name: Autograding Tests
+
+on:
+  workflow_dispatch:
+  repository_dispatch:
+
+permissions:
+  checks: write
+  actions: read
+  contents: read
+
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: t08-01-01
+      id: t08-45-01-45-01
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: t08-01-01
+        setup-command: make compile
+        command: make -s test_01
+        input: ''
+        expected-output: |
+          12S1102|Visual Programming|2|D
+          10S1002|Procedural Programming|2|D
+          12S22999|Wiro Sableng|2022|Information Systems|0.00
+        comparison-method: exact
+        timeout: 1
+        max-score: 20
+
+    - name: t08-02-01
+      id: t08-45-02-45-01
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: t08-02-01
+        setup-command: make compile
+        command: make -s test_02
+        input: ''
+        expected-output: |
+          12S1102|Visual Programming|2|D
+          10S1002|Procedural Programming|2|D
+          12S22999|Wiro Sableng|2022|Information Systems|0.00
+          12S1102|12S22999|None|0.00
+          10S1002|12S22999|None|0.00
+        comparison-method: exact
+        timeout: 1
+        max-score: 20
+
+    - name: t08-03-01
+      id: t08-45-03-45-01
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: t08-03-01
+        setup-command: make compile
+        command: make -s test_03
+        input: ''
+        expected-output: |
+          12S1102|Visual Programming|2|D
+          10S1002|Procedural Programming|2|D
+          12S22999|Wiro Sableng|2022|Information Systems|0.00
+          12S1102|12S22999|None|0.00
+          10S1002|12S22999|None|0.00
+          12S1102|12S22999|A|8.00
+          10S1002|12S22999|AB|7.00
+        comparison-method: exact
+        timeout: 1
+        max-score: 20
+
+    - name: t08-04-01
+      id: t08-45-04-45-01
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: t08-04-01
+        setup-command: make compile
+        command: make -s test_04
+        input: ''
+        expected-output: |
+          12S1102|Visual Programming|2|D
+          10S1002|Procedural Programming|2|D
+          12S22999|Wiro Sableng|2022|Information Systems|0.00
+          12S1102|12S22999|None|0.00
+          10S1002|12S22999|None|0.00
+          12S1102|12S22999|A|8.00
+          10S1002|12S22999|AB|7.00
+          12S22999|Wiro Sableng|2022|Information Systems|3.75
+        comparison-method: exact
+        timeout: 1
+        max-score: 20
+
+    - name: t08-05-01
+      id: t08-45-05-45-01
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: t08-05-01
+        setup-command: make compile
+        command: make -s test_05
+        input: ''
+        expected-output: |
+          12S1102|Visual Programming|2|D
+          12S1101|Information System Fundamentals|3|D
+          10S1002|Procedural Programming|2|D
+          10S1001|Discrete Mathematics|3|D
+          12S22999|Wiro Sableng|2022|Information Systems|0.00
+          12S1102|12S22999|None|0.00
+          12S1101|12S22999|None|0.00
+          10S1002|12S22999|None|0.00
+          10S1001|12S22999|None|0.00
+          12S1102|12S22999|A|8.00
+          12S1101|12S22999|A|12.00
+          10S1002|12S22999|AB|7.00
+          10S1001|12S22999|A|12.00
+          12S22999|Wiro Sableng|2022|Information Systems|3.90
+        comparison-method: exact
+        timeout: 1
+        max-score: 20
+
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        T08-45-01-45-01_RESULTS: "${{steps.t08-45-01-45-01.outputs.result}}"
+        T08-45-02-45-01_RESULTS: "${{steps.t08-45-02-45-01.outputs.result}}"
+        T08-45-03-45-01_RESULTS: "${{steps.t08-45-03-45-01.outputs.result}}"
+        T08-45-04-45-01_RESULTS: "${{steps.t08-45-04-45-01.outputs.result}}"
+        T08-45-05-45-01_RESULTS: "${{steps.t08-45-05-45-01.outputs.result}}"
+      with:
+        runners: t08-45-01-45-01,t08-45-02-45-01,t08-45-03-45-01,t08-45-04-45-01,t08-45-05-45-01

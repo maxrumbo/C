@@ -1,0 +1,124 @@
+name: Autograding Tests
+'on':
+- workflow_dispatch
+- repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: test-01_01
+      id: test-01_01
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: test-01_01
+        setup-command: make compile
+        command: make -s test_01
+        input: '099105104117121033'
+        expected-output: 'cihuy!'
+        comparison-method: exact
+        timeout: 1
+        max-score: 10
+    - name: test-01_02
+      id: test-01_02
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: test-01_02
+        setup-command: make compile
+        command: make -s test_01
+        input: '089111117044032109101044032038032067'
+        expected-output: 'You, me, & C'
+        comparison-method: exact
+        timeout: 1
+        max-score: 10
+    - name: test-01_03
+      id: test-01_03
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: test-01_03
+        setup-command: make compile
+        command: make -s test_01
+        input: '074117115116052067111100101'
+        expected-output: 'Just4Code'
+        comparison-method: exact
+        timeout: 1
+        max-score: 10
+    - name: test_01-04
+      id: test_01-04
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: test_01-04
+        setup-command: make compile
+        command: make -s test_01
+        input: '043'
+        expected-output: "+\n"
+        comparison-method: exact
+        timeout: 1
+        max-score: 10
+    - name: test_02-01
+      id: test_02-01
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: test_02-01
+        setup-command: make compile
+        command: make -s test_02
+        input: 'Big O'
+        expected-output: '066105103032079013'
+        comparison-method: exact
+        timeout: 1
+        max-score: 15
+    - name: test_02-02
+      id: test_02-02
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: test_02-02
+        setup-command: make compile
+        command: make -s test_02
+        input: 'Jaka Sembung'
+        expected-output: '074097107097032083101109098117110103013'
+        comparison-method: exact
+        timeout: 1
+        max-score: 15
+    - name: test_02-03
+      id: test_02-03
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: test_02-03
+        setup-command: make compile
+        command: make -s test_02
+        input: 'c_total=blackscreen'
+        expected-output: '099095116111116097108061098108097099107115099114101101110013'
+        comparison-method: exact
+        timeout: 1
+        max-score: 15
+    - name: test_02-04
+      id: test_02-04
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: test_02-04
+        setup-command: make compile
+        command: make -s test_02
+        input: "C\n "
+        expected-output: '067013'
+        comparison-method: exact
+        timeout: 1
+        max-score: 15
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        TEST-01_01_RESULTS: "${{steps.test-01_01.outputs.result}}"
+        TEST-01_02_RESULTS: "${{steps.test-01_02.outputs.result}}"
+        TEST-01_03_RESULTS: "${{steps.test-01_03.outputs.result}}"
+        TEST_01-04_RESULTS: "${{steps.test_01-04.outputs.result}}"
+        TEST_02-01_RESULTS: "${{steps.test_02-01.outputs.result}}"
+        TEST_02-02_RESULTS: "${{steps.test_02-02.outputs.result}}"
+        TEST_02-03_RESULTS: "${{steps.test_02-03.outputs.result}}"
+        TEST_02-04_RESULTS: "${{steps.test_02-04.outputs.result}}"
+      with:
+        runners: test-01_01,test-01_02,test-01_03,test_01-04,test_02-01,test_02-02,test_02-03,test_02-04

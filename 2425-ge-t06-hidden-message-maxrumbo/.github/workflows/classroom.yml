@@ -1,0 +1,126 @@
+name: Autograding Tests
+'on':
+- workflow_dispatch
+- repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: test_01-01
+      id: test_01-01
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: test_01-01
+        setup-command: make compile
+        command: "./t06_01 2"
+        input: |
+          project#60#81
+          final exam#40#78
+        expected-output: |
+          project;60;81
+          final exam;40;78
+          79.8
+          passed
+        comparison-method: exact
+        timeout: 1
+        max-score: 20
+    - name: test_01-02
+      id: test_01-02
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: test_01-02
+        setup-command: make compile
+        command: "./t06_01 4"
+        input: |
+          quiz#20#47
+          assignment#30#93
+          mid exam#25#78
+          final exam#25#81
+        expected-output: |
+          quiz;20;47
+          assignment;30;93
+          mid exam;25;78
+          final exam;25;81
+          77.1
+          passed
+        comparison-method: exact
+        timeout: 1
+        max-score: 20
+    - name: test_01-03
+      id: test_01-03
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: test_01-03
+        setup-command: make compile
+        command: "./t06_01 5"
+        input: |
+          quiz#10#47
+          assignment#20#63
+          project#20#55
+          mid exam#20#40
+          final exam#30#44
+        expected-output: |
+          quiz;10;47
+          assignment;20;63
+          project;20;55
+          mid exam;20;40
+          final exam;30;44
+          49.5
+          failed
+        comparison-method: exact
+        timeout: 1
+        max-score: 20
+    - name: test_01-04
+      id: test_01-04
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: test_01-04
+        setup-command: make compile
+        command: "./t06_01 1"
+        input: 'final exam#100#100
+
+          '
+        expected-output: |
+          final exam;100;100
+          100.0
+          passed
+        comparison-method: exact
+        timeout: 1
+        max-score: 20
+    - name: test_01-05
+      id: test_01-05
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: test_01-05
+        setup-command: make compile
+        command: "./t06_01 3"
+        input: |
+          assignment#30#0
+          mid exam#35#0
+          final exam#35#0
+        expected-output: |
+          assignment;30;0
+          mid exam;35;0
+          final exam;35;0
+          0.0
+          failed
+        comparison-method: exact
+        timeout: 1
+        max-score: 20
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        TEST_01-01_RESULTS: "${{steps.test_01-01.outputs.result}}"
+        TEST_01-02_RESULTS: "${{steps.test_01-02.outputs.result}}"
+        TEST_01-03_RESULTS: "${{steps.test_01-03.outputs.result}}"
+        TEST_01-04_RESULTS: "${{steps.test_01-04.outputs.result}}"
+        TEST_01-05_RESULTS: "${{steps.test_01-05.outputs.result}}"
+      with:
+        runners: test_01-01,test_01-02,test_01-03,test_01-04,test_01-05

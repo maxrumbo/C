@@ -1,0 +1,142 @@
+name: Autograding Tests
+'on':
+- workflow_dispatch
+- repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: t01&#45;01&#45;01
+      id: t01-45-01-45-01
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: t01&#45;01&#45;01
+        setup-command: make compile
+        command: make -s test_01
+        input: |
+          200
+          c
+          -15
+          41414
+          14.12345
+        expected-output: |
+          200
+          c
+          -15
+          41414
+          14.12
+        comparison-method: exact
+        timeout: 1
+        max-score: 15
+    - name: t01&#45;01&#45;02
+      id: t01-45-01-45-02
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: t01&#45;01&#45;02
+        setup-command: make compile
+        command: make -s test_01
+        input: |
+          99
+          Q
+          -31
+          65000
+          -1.2345
+        expected-output: |
+          99
+          Q
+          -31
+          65000
+          -1.23
+        comparison-method: exact
+        timeout: 1
+        max-score: 15
+    - name: t01&#45;02&#45;01
+      id: t01-45-02-45-01
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: t01&#45;02&#45;01
+        setup-command: make compile
+        command: make -s test_02
+        input: |
+          16.12
+          29.3311
+          -1
+          -6.6789
+          0.0
+        expected-output: |
+          37.772
+          7.554
+        comparison-method: exact
+        timeout: 1
+        max-score: 15
+    - name: t01&#45;02&#45;02
+      id: t01-45-02-45-02
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: t01&#45;02&#45;02
+        setup-command: make compile
+        command: make -s test_02
+        input: |
+          11.12
+          -22.3311
+          -76.5
+          667.89
+          0.1
+        expected-output: |
+          580.279
+          116.056
+        comparison-method: exact
+        timeout: 1
+        max-score: 15
+    - name: t01&#45;03&#45;01
+      id: t01-45-03-45-01
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: t01&#45;03&#45;01
+        setup-command: make compile
+        command: make -s test_03
+        input: |
+          3
+          4
+          11
+        expected-output: |
+          48
+          0
+        comparison-method: exact
+        timeout: 1
+        max-score: 20
+    - name: t01&#45;03&#45;02
+      id: t01-45-03-45-02
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: t01&#45;03&#45;02
+        setup-command: make compile
+        command: make -s test_03
+        input: |
+          4
+          1
+          8
+        expected-output: |
+          8
+          1
+        comparison-method: exact
+        timeout: 1
+        max-score: 20
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        T01-45-01-45-01_RESULTS: "${{steps.t01-45-01-45-01.outputs.result}}"
+        T01-45-01-45-02_RESULTS: "${{steps.t01-45-01-45-02.outputs.result}}"
+        T01-45-02-45-01_RESULTS: "${{steps.t01-45-02-45-01.outputs.result}}"
+        T01-45-02-45-02_RESULTS: "${{steps.t01-45-02-45-02.outputs.result}}"
+        T01-45-03-45-01_RESULTS: "${{steps.t01-45-03-45-01.outputs.result}}"
+        T01-45-03-45-02_RESULTS: "${{steps.t01-45-03-45-02.outputs.result}}"
+      with:
+        runners: t01-45-01-45-01,t01-45-01-45-02,t01-45-02-45-01,t01-45-02-45-02,t01-45-03-45-01,t01-45-03-45-02
