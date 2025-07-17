@@ -1,0 +1,139 @@
+name: Autograding Tests
+'on':
+- workflow_dispatch
+- repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: f01&#45;01&#45;01
+      id: f01-45-01-45-01
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: f01&#45;01&#45;01
+        setup-command: make compile
+        command: make -s test_01
+        input: |
+          todo-print-all
+          ---
+        expected-output: |
+          1|08:30|Group Project|canceled
+          2|10:00|Class: Fantastic Pempros|done
+          3|13:30|Group Project|none
+        comparison-method: exact
+        timeout: 1
+        max-score: 20
+    - name: f01&#45;01&#45;02
+      id: f01-45-01-45-02
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: f01&#45;01&#45;02
+        setup-command: make compile
+        command: make -s test_01
+        input: |
+          todo-add#15:00#Class: Pempros lab
+          todo-add#17:10#SI v. IF semi match
+          todo-print-all
+          ---
+        expected-output: |
+          1|08:30|Group Project|canceled
+          2|10:00|Class: Fantastic Pempros|done
+          3|13:30|Group Project|none
+          4|15:00|Class: Pempros lab|none
+          5|17:10|SI v. IF semi match|none
+        comparison-method: exact
+        timeout: 1
+        max-score: 20
+    - name: f01&#45;01&#45;03
+      id: f01-45-01-45-03
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: f01&#45;01&#45;03
+        setup-command: make compile
+        command: make -s test_02
+        input: |
+          todo-add#15:00#Class: Pempros lab
+          todo-status#3#done
+          todo-add#17:10#SI v. IF semi match
+          todo-print-all
+          ---
+        expected-output: |
+          1|08:30|Group Project|canceled
+          2|10:00|Class: Fantastic Pempros|done
+          3|13:30|Group Project|done
+          4|15:00|Class: Pempros lab|none
+          5|17:10|SI v. IF semi match|none
+        comparison-method: exact
+        timeout: 1
+        max-score: 20
+    - name: f01&#45;01&#45;04
+      id: f01-45-01-45-04
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: f01&#45;01&#45;04
+        setup-command: make compile
+        command: make -s test_02
+        input: |
+          todo-add#15:00#Class: Pempros lab
+          todo-status#3#done
+          todo-add#17:10#SI v. IF semi match
+          todo-status#2#canceled
+          todo-print-all
+          ---
+        expected-output: |
+          1|08:30|Group Project|canceled
+          2|10:00|Class: Fantastic Pempros|done
+          3|13:30|Group Project|done
+          4|15:00|Class: Pempros lab|none
+          5|17:10|SI v. IF semi match|none
+        comparison-method: exact
+        timeout: 1
+        max-score: 20
+    - name: f01&#45;01&#45;05
+      id: f01-45-01-45-05
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: f01&#45;01&#45;05
+        setup-command: make compile
+        command: make -s test_03
+        input: |
+          todo-add#15:00#Class: Pempros lab
+          todo-status#3#done
+          todo-add#17:10#SI v. IF semi match
+          todo-print-all
+          todo-status#4#done
+          todo-status#5#done
+          todo-status#5#canceled
+          todo-print-all
+          ---
+        expected-output: |
+          1|08:30|Group Project|canceled
+          2|10:00|Class: Fantastic Pempros|done
+          3|13:30|Group Project|done
+          4|15:00|Class: Pempros lab|none
+          5|17:10|SI v. IF semi match|none
+          1|08:30|Group Project|canceled
+          2|10:00|Class: Fantastic Pempros|done
+          3|13:30|Group Project|done
+          4|15:00|Class: Pempros lab|done
+          5|17:10|SI v. IF semi match|done
+        comparison-method: exact
+        timeout: 1
+        max-score: 20
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        F01-45-01-45-01_RESULTS: "${{steps.f01-45-01-45-01.outputs.result}}"
+        F01-45-01-45-02_RESULTS: "${{steps.f01-45-01-45-02.outputs.result}}"
+        F01-45-01-45-03_RESULTS: "${{steps.f01-45-01-45-03.outputs.result}}"
+        F01-45-01-45-04_RESULTS: "${{steps.f01-45-01-45-04.outputs.result}}"
+        F01-45-01-45-05_RESULTS: "${{steps.f01-45-01-45-05.outputs.result}}"
+      with:
+        runners: f01-45-01-45-01,f01-45-01-45-02,f01-45-01-45-03,f01-45-01-45-04,f01-45-01-45-05
