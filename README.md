@@ -1,3 +1,4 @@
+---
 # Procedural Programming Projects (C Language) 
 
 Welcome to my repository for the Procedural Programming course, Semester 2! This collection showcases the projects and assignments I've developed using the **C programming language**. It's a journey through the fundamentals of procedural programming, highlighting my growth and understanding of core C concepts.
